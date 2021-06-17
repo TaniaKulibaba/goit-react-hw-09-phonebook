@@ -19,30 +19,24 @@ const styles = {
 export default function RegisterView() {
   const dispatch = useDispatch();
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
 
-  const handleNameChange = ({ target: { value } }) => {
-    setName(value);
-  };
-
-  const handleEmailChange = ({ target: { value } }) => {
-    setEmail(value);
-  };
-
-  const handlePasswordChange = ({ target: { value } }) => {
-    setPassword(value);
-  };  
-
-
+  const handleChange = ({ currentTarget: { name, value } }) =>
+    setUser(prev => ({ ...prev, [name]: value }));
+ 
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(authOperations.register({ name, email, password }))
+    dispatch(authOperations.register(user))
 
-    setName('');
-    setEmail('');
-    setPassword('');
+    setUser({
+      name: '',
+      email: '',
+      password: ''
+    });
   };
 
 
@@ -60,8 +54,8 @@ export default function RegisterView() {
           <input
             type="text"
             name="name"
-            value={name}
-            onChange={handleNameChange}
+            value={user.name}
+            onChange={handleChange}
           />
         </label>
         <label style={styles.label}>
@@ -69,8 +63,8 @@ export default function RegisterView() {
           <input
             type="email"
             name="email"
-            value={email}
-            onChange={handleEmailChange}
+            value={user.email}
+            onChange={handleChange}
           />
         </label>
         <label style={styles.label}>
@@ -78,8 +72,8 @@ export default function RegisterView() {
           <input
             type="password"
             name="password"
-            value={password}
-            onChange={handlePasswordChange}
+            value={user.password}
+            onChange={handleChange}
           />
         </label>
         <Button type="submit" variant="contained" color="primary">Sign up</Button>

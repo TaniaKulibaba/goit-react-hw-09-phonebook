@@ -19,23 +19,23 @@ const styles = {
 export default function LoginView() {
   const dispatch = useDispatch();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [ user, setUser ] = useState({
+    email: '',
+    password: ''
+  });
 
-  const handleEmailChange = ({ target: { value } }) => {
-    setEmail(value);
-  };
-
-  const handlePasswordChange = ({ target: { value } }) => {
-    setPassword(value);
-  };
-
+  const handleChange = ({ currentTarget: { name, value } }) =>
+    setUser(prev => ({ ...prev, [name]: value }));
+  
+  
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(authOperations.logIn({ email, password }));
+    dispatch(authOperations.logIn(user));
   
-    setEmail('');
-    setPassword('');
+    setUser({
+      email: '',
+      password: ''
+    });
   };
     
   return (
@@ -51,8 +51,8 @@ export default function LoginView() {
           <input
             type="email"
             name="email"
-            value={email}
-            onChange={handleEmailChange}
+            value={user.email}
+            onChange={handleChange}
           />
         </label>
        <label style={styles.label}>
@@ -60,8 +60,8 @@ export default function LoginView() {
           <input
             type="password"
             name="password"
-            value={password}
-            onChange={handlePasswordChange}
+            value={user.password}
+            onChange={handleChange}
           />
         </label>
        <Button type="submit" variant="contained" color="primary">Login</Button>
